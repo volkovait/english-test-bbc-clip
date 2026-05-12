@@ -96,18 +96,12 @@ body {
   }
 }
 
+/* Заголовок и широкий баннер — колонкой (панорама не режется боковой колонкой). */
 .header {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   margin-bottom: 1.75rem;
-}
-
-@media (min-width: 880px) {
-  .header {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
-    align-items: start;
-  }
 }
 
 .eyebrow {
@@ -135,6 +129,8 @@ h1 {
 
 .hero-visual {
   margin: 0;
+  width: 100%;
+  min-width: 0;
 }
 
 .hero-visual__frame {
@@ -144,15 +140,15 @@ h1 {
   border: 1px solid var(--border);
   background: linear-gradient(145deg, #fff8eb, #f0e4d4);
   box-shadow: var(--shadow);
-  min-height: 200px;
+  min-height: 120px;
 }
 
 .hero-visual__img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .hero-visual__img[hidden] {
