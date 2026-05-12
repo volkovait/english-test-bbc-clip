@@ -373,9 +373,117 @@ input[type="text"]:focus-visible {
   border: 0;
 }
 
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.quiz-question {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fffdf9;
+}
+
+.quiz-question--missed {
+  outline: 2px dashed rgba(180, 35, 24, 0.45);
+}
+
+.quiz-question__legend {
+  padding: 0;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+
+.quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.25rem 0.35rem;
+  border-radius: 8px;
+}
+
+.quiz-option:last-child {
+  margin-bottom: 0;
+}
+
+.quiz-option input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.writing-story {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.writing-story:first-of-type {
+  margin-top: 0.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.writing-story__title {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.writing-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.65rem;
+}
+
+.writing-field:last-child {
+  margin-bottom: 0;
+}
+
+.writing-field__label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.writing-field__input {
+  font: inherit;
+  line-height: 1.45;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fffdf9;
+  resize: vertical;
+  min-height: 2.75rem;
+}
+
+.writing-field__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.quiz-option.is-correct {
+  background: var(--ok-bg);
+  border: 1px solid var(--ok);
+}
+
+.quiz-option.is-wrong {
+  background: var(--bad-bg);
+  border: 1px solid var(--bad);
+}
+
 /* Result states */
 body.is-locked input,
 body.is-locked select,
+body.is-locked textarea,
 body.is-locked button#submitBtn {
   pointer-events: none;
 }

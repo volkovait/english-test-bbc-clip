@@ -1,7 +1,7 @@
 const botToken = "8543757949:AAHkb7EeGKgHpNsH7DJN0sc3jgoM-3U4Ibg";
 const chatId = "385632170";
 
-const storageKey = "en-test-bbc-parakeets-2026-v3";
+const storageKey = "en-test-bbc-parakeets-2026-v5";
 
 /** Ключ 2A: два слова на каждую часть программы (порядок в паре как в ключе). */
 const matchCorrectPairs = {
@@ -56,6 +56,46 @@ const gapCorrect = {
 const matchSelectIds = ["match1a", "match1b", "match2a", "match2b", "match3a", "match3b"];
 const gapSelectIds = ["gap1", "gap2", "gap3", "gap4", "gap5", "gap6", "gap7"];
 
+const quizRadioNames = ["quiz1", "quiz2", "quiz3"];
+
+/** Ключ викторины: 1 — b, 2 — b, 3 — c. */
+const quizConfig = [
+  {
+    name: "quiz1",
+    correctValue: "b",
+    labelShort: "Quiz 1 · live in",
+    choices: { a: "the USA?", b: "India?", c: "Pakistan?" },
+  },
+  {
+    name: "quiz2",
+    correctValue: "b",
+    labelShort: "Quiz 2 · get up at",
+    choices: { a: "five o'clock?", b: "half past five?", c: "six o'clock?" },
+  },
+  {
+    name: "quiz3",
+    correctValue: "c",
+    labelShort: "Quiz 3 · he says",
+    choices: {
+      a: "he loves animals?",
+      b: "he loves all living things?",
+      c: "all living things are important?",
+    },
+  },
+];
+
+const writingFieldIds = [
+  "write_joseph_yesno",
+  "write_joseph_wh",
+  "write_joseph_or",
+  "write_billy_yesno",
+  "write_billy_wh",
+  "write_billy_or",
+  "write_elvira_yesno",
+  "write_elvira_wh",
+  "write_elvira_or",
+];
+
 function escapeHtml(text) {
   return String(text)
     .replaceAll("&", "&amp;")
@@ -109,6 +149,14 @@ function collectFormValues() {
       values[selectId] = element.value;
     }
   }
+  for (const quizName of quizRadioNames) {
+    const chosen = document.querySelector(`input[name="${quizName}"]:checked`);
+    values[quizName] = chosen ? chosen.value : "";
+  }
+  for (const fieldId of writingFieldIds) {
+    const element = document.getElementById(fieldId);
+    values[fieldId] = element ? element.value : "";
+  }
   const nameInput = document.getElementById("studentName");
   values.studentName = nameInput ? nameInput.value.trim() : "";
   return values;
@@ -122,6 +170,22 @@ function applyFormValues(values) {
     const element = document.getElementById(selectId);
     if (element && Object.prototype.hasOwnProperty.call(values, selectId)) {
       element.value = values[selectId];
+    }
+  }
+  for (const quizName of quizRadioNames) {
+    if (Object.prototype.hasOwnProperty.call(values, quizName) && values[quizName]) {
+      const radioInput = document.querySelector(
+        `input[name="${quizName}"][value="${values[quizName]}"]`,
+      );
+      if (radioInput) {
+        radioInput.checked = true;
+      }
+    }
+  }
+  for (const fieldId of writingFieldIds) {
+    const element = document.getElementById(fieldId);
+    if (element && Object.prototype.hasOwnProperty.call(values, fieldId)) {
+      element.value = values[fieldId];
     }
   }
   const nameInput = document.getElementById("studentName");
@@ -211,6 +275,34 @@ function scoreGaps() {
   return { points, max, rows };
 }
 
+function scoreQuiz() {
+  const rows = [];
+  let points = 0;
+  for (const item of quizConfig) {
+    const chosen = document.querySelector(`input[name="${item.name}"]:checked`);
+    const studentValue = chosen ? chosen.value : "";
+    const isCorrect = studentValue === item.correctValue;
+    if (isCorrect) {
+      points += 1;
+    }
+    const correctLetter = item.correctValue;
+    const correctPhrase = item.choices[correctLetter];
+    const correctDisplay = `${correctLetter}) ${correctPhrase}`;
+    let studentDisplay = "—";
+    if (studentValue) {
+      const studentPhrase = item.choices[studentValue];
+      studentDisplay = `${studentValue}) ${studentPhrase}`;
+    }
+    rows.push({
+      key: item.name,
+      correctDisplay: `${item.labelShort}: ${correctDisplay}`,
+      studentDisplay,
+      isCorrect,
+    });
+  }
+  return { points, max: quizConfig.length, rows };
+}
+
 function clearSelectMarks() {
   for (const selectId of [...matchSelectIds, ...gapSelectIds]) {
     const element = document.getElementById(selectId);
@@ -220,8 +312,38 @@ function clearSelectMarks() {
   }
 }
 
-function applySelectMarks(matchingResult, gapsResult) {
+function clearQuizMarks() {
+  document.querySelectorAll(".quiz-option").forEach((label) => {
+    label.classList.remove("is-correct", "is-wrong");
+  });
+  document.querySelectorAll(".quiz-question--missed").forEach((fieldset) => {
+    fieldset.classList.remove("quiz-question--missed");
+  });
+}
+
+function applyQuizMarks(quizResult) {
+  for (const row of quizResult.rows) {
+    const fieldset = document.querySelector(`fieldset[data-quiz="${row.key}"]`);
+    if (!fieldset) {
+      continue;
+    }
+    const chosen = fieldset.querySelector("input:checked");
+    if (!chosen) {
+      fieldset.classList.add("quiz-question--missed");
+      continue;
+    }
+    fieldset.querySelectorAll("label.quiz-option").forEach((label) => {
+      const input = label.querySelector("input");
+      if (input && input.checked) {
+        label.classList.add(row.isCorrect ? "is-correct" : "is-wrong");
+      }
+    });
+  }
+}
+
+function applySelectMarks(matchingResult, gapsResult, quizResult) {
   clearSelectMarks();
+  clearQuizMarks();
 
   for (let groupNumber = 1; groupNumber <= 3; groupNumber += 1) {
     const pairValues = getMatchGroupValues(groupNumber);
@@ -270,6 +392,10 @@ function applySelectMarks(matchingResult, gapsResult) {
       element?.classList.add("is-wrong");
     }
   }
+
+  if (quizResult) {
+    applyQuizMarks(quizResult);
+  }
 }
 
 function buildTelegramHtml(studentName, totalPoints, maxPoints, detailRows) {
@@ -308,6 +434,53 @@ function padColumn(text, width) {
   return slice.padEnd(width, " ");
 }
 
+const writingTelegramStories = [
+  {
+    title: "Joseph Sekar and the parakeets",
+    fields: [
+      { key: "write_joseph_yesno", label: "Yes/No" },
+      { key: "write_joseph_wh", label: "Wh-" },
+      { key: "write_joseph_or", label: "or" },
+    ],
+  },
+  {
+    title: "Billy Ellis, the fire lookout",
+    fields: [
+      { key: "write_billy_yesno", label: "Yes/No" },
+      { key: "write_billy_wh", label: "Wh-" },
+      { key: "write_billy_or", label: "or" },
+    ],
+  },
+  {
+    title: "Elvira and the manatee",
+    fields: [
+      { key: "write_elvira_yesno", label: "Yes/No" },
+      { key: "write_elvira_wh", label: "Wh-" },
+      { key: "write_elvira_or", label: "or" },
+    ],
+  },
+];
+
+const telegramWrittenMaxChars = 3500;
+
+function buildWrittenTelegramHtml(values) {
+  const lines = [];
+  for (const story of writingTelegramStories) {
+    lines.push(story.title);
+    for (const field of story.fields) {
+      const raw = typeof values[field.key] === "string" ? values[field.key].trim() : "";
+      const displayText = raw.length > 0 ? raw : "—";
+      lines.push(`  ${field.label}: ${displayText}`);
+    }
+    lines.push("");
+  }
+  let bodyText = lines.join("\n").trimEnd();
+  if (bodyText.length > telegramWrittenMaxChars) {
+    bodyText = `${bodyText.slice(0, telegramWrittenMaxChars)}\n… (обрезано)`;
+  }
+  return `<b>Письменные вопросы (без автобаллов):</b>\n<pre>${escapeHtml(bodyText)}</pre>`;
+}
+
 async function sendTelegramMessage(htmlMessage) {
   const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
   const response = await fetch(url, {
@@ -332,6 +505,12 @@ function setLocked(isLocked) {
   const submitButton = document.getElementById("submitBtn");
   if (submitButton) {
     submitButton.disabled = isLocked;
+  }
+  for (const fieldId of writingFieldIds) {
+    const element = document.getElementById(fieldId);
+    if (element) {
+      element.readOnly = isLocked;
+    }
   }
 }
 
@@ -398,7 +577,8 @@ function initFormPersistence() {
     setLocked(true);
     const matchingResult = scoreMatching();
     const gapsResult = scoreGaps();
-    applySelectMarks(matchingResult, gapsResult);
+    const quizResult = scoreQuiz();
+    applySelectMarks(matchingResult, gapsResult, quizResult);
     const statusMessage = document.getElementById("statusMessage");
     if (statusMessage) {
       statusMessage.textContent = "Тест уже отправлен; ответы заблокированы.";
@@ -406,7 +586,7 @@ function initFormPersistence() {
     }
   }
 
-  const trackedIds = ["studentName", ...matchSelectIds, ...gapSelectIds];
+  const trackedIds = ["studentName", ...matchSelectIds, ...gapSelectIds, ...writingFieldIds];
   for (const elementId of trackedIds) {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -414,6 +594,12 @@ function initFormPersistence() {
     }
     element.addEventListener("input", persistDraft);
     element.addEventListener("change", persistDraft);
+  }
+
+  for (const quizName of quizRadioNames) {
+    document.querySelectorAll(`input[name="${quizName}"]`).forEach((radioInput) => {
+      radioInput.addEventListener("change", persistDraft);
+    });
   }
 
   applyGap1DefaultIfNeeded();
@@ -451,6 +637,7 @@ function wireSubmit() {
 
     const matchingResult = scoreMatching();
     const gapsResult = scoreGaps();
+    const quizResult = scoreQuiz();
 
     const detailRows = [];
     for (const row of matchingResult.rows) {
@@ -467,11 +654,18 @@ function wireSubmit() {
         isCorrect: row.isCorrect,
       });
     }
+    for (const row of quizResult.rows) {
+      detailRows.push({
+        correctDisplay: row.correctDisplay,
+        studentDisplay: row.studentDisplay,
+        isCorrect: row.isCorrect,
+      });
+    }
 
-    const totalPoints = matchingResult.points + gapsResult.points;
-    const maxPoints = matchingResult.max + gapsResult.max;
+    const totalPoints = matchingResult.points + gapsResult.points + quizResult.points;
+    const maxPoints = matchingResult.max + gapsResult.max + quizResult.max;
 
-    applySelectMarks(matchingResult, gapsResult);
+    applySelectMarks(matchingResult, gapsResult, quizResult);
     setLocked(true);
 
     writeStoredState({
@@ -486,9 +680,11 @@ function wireSubmit() {
     }
 
     const telegramHtml = buildTelegramHtml(values.studentName, totalPoints, maxPoints, detailRows);
+    const writtenHtml = buildWrittenTelegramHtml(values);
 
     try {
       await sendTelegramMessage(telegramHtml);
+      await sendTelegramMessage(writtenHtml);
       if (statusMessage) {
         statusMessage.textContent = `Готово. Балл: ${totalPoints} из ${maxPoints}. Результаты отправлены в Telegram.`;
         statusMessage.classList.add("status--ok");
