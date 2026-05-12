@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BBC clip — vocabulary & grammar</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <section class="card card--glossary" aria-labelledby="glossary-heading">
+        <h2 id="glossary-heading">Мини-словарь</h2>
+        <dl class="glossary">
+          <div class="glossary__pair">
+            <dt lang="en">animal</dt>
+            <dd>животное</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">parakeet</dt>
+            <dd>попугай (неразлучник / длиннохвостый попугай)</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">fire lookout</dt>
+            <dd>наблюдатель за пожарами / лесной пожарный наблюдатель</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">village</dt>
+            <dd>деревня</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">manatee</dt>
+            <dd>ламантин</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">breakfast</dt>
+            <dd>завтрак</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">forest</dt>
+            <dd>лес</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">lake</dt>
+            <dd>озеро</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">rice</dt>
+            <dd>рис</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">river</dt>
+            <dd>река</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">step</dt>
+            <dd>шаг</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to come</dt>
+            <dd>приходить</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to get up</dt>
+            <dd>вставать (с постели)</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to live</dt>
+            <dd>жить</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to make</dt>
+            <dd>делать, создавать</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to say</dt>
+            <dd>говорить, сказать</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to see</dt>
+            <dd>видеть</dd>
+          </div>
+          <div class="glossary__pair">
+            <dt lang="en">to watch</dt>
+            <dd>смотреть, наблюдать</dd>
+          </div>
+        </dl>
+      </section>
+
+      <header class="header">
+        <div class="header__text">
+          <p class="eyebrow">Интерактивный тест по учебнику</p>
+          <h1>BBC video clip: earth from space</h1>
+          <p class="lead">
+            Инструкции к заданиям на русском; формулировки упражнений — на английском, как в
+            учебнике. Ответы сохраняются в браузере до отправки.
+          </p>
+        </div>
+        <aside class="hero-visual" aria-label="Иллюстрация к теме">
+          <div class="hero-visual__frame">
+            <img
+              id="themeImage"
+              src="assets/theme-illustration.jpg"
+              alt=""
+              class="hero-visual__img"
+              width="480"
+              height="320"
+              loading="lazy"
+              hidden
+            />
+            <div id="themeImagePlaceholder" class="hero-visual__placeholder">
+              <span class="hero-visual__badge">Место для картинки</span>
+              <p class="hero-visual__hint">
+                Положите файл <code>assets/theme-illustration.png</code> (или измените
+                <code>src</code> у элемента <code>#themeImage</code>).
+              </p>
+            </div>
+          </div>
+        </aside>
+      </header>
+
+      <section class="card card--student">
+        <h2>Твоё имя</h2>
+        <label class="field">
+          <span class="field__label">напиши сюда</span>
+          <input
+            type="text"
+            id="studentName"
+            name="studentName"
+            autocomplete="name"
+            placeholder="Иванова Мария Сергеевна"
+            maxlength="120"
+          />
+        </label>
+      </section>
+
+      <section class="card" data-exercise="2a">
+        <h2>Упражнение 2A</h2>
+        <p class="instruction">
+          Работайте в парах. Сопоставьте слова из рамки с частями программы (1–3). Для каждого
+          номера выберите <strong>два</strong> слова (порядок не важен).
+        </p>
+        <p class="word-bank" lang="en">
+          <span class="word-bank__title">Word box:</span>
+          breakfast · forest · lake · rice · rivers · steps
+        </p>
+        <ol class="programme-list">
+          <li class="programme-list__item">
+            <span class="programme-list__title" lang="en">Joseph Sekar and the parakeets</span>
+            <div class="pair-selects">
+              <label class="sr-only" for="match1a">Word 1 for programme 1</label>
+              <select id="match1a" class="answer-select" data-key="match1a" data-group="1"></select>
+              <label class="sr-only" for="match1b">Word 2 for programme 1</label>
+              <select id="match1b" class="answer-select" data-key="match1b" data-group="1"></select>
+            </div>
+          </li>
+          <li class="programme-list__item">
+            <span class="programme-list__title" lang="en">Billy Ellis, the fire lookout</span>
+            <div class="pair-selects">
+              <label class="sr-only" for="match2a">Word 1 for programme 2</label>
+              <select id="match2a" class="answer-select" data-key="match2a" data-group="2"></select>
+              <label class="sr-only" for="match2b">Word 2 for programme 2</label>
+              <select id="match2b" class="answer-select" data-key="match2b" data-group="2"></select>
+            </div>
+          </li>
+          <li class="programme-list__item">
+            <span class="programme-list__title" lang="en">Elvira and the manatee</span>
+            <div class="pair-selects">
+              <label class="sr-only" for="match3a">Word 1 for programme 3</label>
+              <select id="match3a" class="answer-select" data-key="match3a" data-group="3"></select>
+              <label class="sr-only" for="match3b">Word 2 for programme 3</label>
+              <select id="match3b" class="answer-select" data-key="match3b" data-group="3"></select>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="card" data-exercise="2b">
+        <h2>Упражнение B</h2>
+        <p class="instruction">
+          Посмотрите видеоклип BBC и проверьте свои идеи. Ниже — заглушка: замените файл в папке
+          <code>media/</code> на свой ролик или аудиодорожку.
+        </p>
+        <div class="media-block">
+          <video class="media-block__video" controls preload="metadata" poster="">
+            <source src="media/bbc-clip-placeholder.mp4" type="video/mp4" />
+            <p lang="en">
+              Your browser does not support the video tag. Add <code>media/bbc-clip-placeholder.mp4</code>.
+            </p>
+          </video>
+        </div>
+      </section>
+
+      <section class="card" data-exercise="2c">
+        <h2>Упражнение C</h2>
+        <p class="instruction">
+          Дополните предложения правильной формой глагола из рамки. Затем посмотрите ещё раз и
+          проверьте. Слово <span lang="en">make</span> в рамке зачёркнуто — в списке вариантов для
+          пропусков используется форма <span lang="en">makes</span>.
+        </p>
+        <p class="word-bank" lang="en">
+          <span class="word-bank__title">Verbs:</span>
+          come · get up · live · say · see · watch
+        </p>
+        <ol class="gap-list">
+          <li class="gap-list__item" lang="en">
+            He gets up at half past five every morning and
+            <label class="sr-only" for="gap1">Verb form, sentence 1</label>
+            <select id="gap1" class="answer-select" data-key="gap1"></select>
+            rice for the parakeets.
+          </li>
+          <li class="gap-list__item" lang="en">
+            Four thousand parakeets
+            <label class="sr-only" for="gap2">Verb form, sentence 2</label>
+            <select id="gap2" class="answer-select" data-key="gap2"></select>
+            to his home every day.
+          </li>
+          <li class="gap-list__item" lang="en">
+            I
+            <label class="sr-only" for="gap3">Verb form, sentence 3</label>
+            <select id="gap3" class="answer-select" data-key="gap3"></select>
+            , have a cup of coffee and then I’m ready to go.
+          </li>
+          <li class="gap-list__item" lang="en">
+            Billy is a fire lookout. He
+            <label class="sr-only" for="gap4">Verb form, sentence 4</label>
+            <select id="gap4" class="answer-select" data-key="gap4"></select>
+            the forest for fires.
+          </li>
+          <li class="gap-list__item" lang="en">
+            No, not often, but when he
+            <label class="sr-only" for="gap5">Verb form, sentence 5</label>
+            <select id="gap5" class="answer-select" data-key="gap5"></select>
+            a fire, it’s his job to call the firefighters.
+          </li>
+          <li class="gap-list__item" lang="en">
+            Manatees usually
+            <label class="sr-only" for="gap6">Verb form, sentence 6</label>
+            <select id="gap6" class="answer-select" data-key="gap6"></select>
+            in rivers.
+          </li>
+          <li class="gap-list__item" lang="en">
+            Elvira watches the manatee and
+            <label class="sr-only" for="gap7">Verb form, sentence 7</label>
+            <select id="gap7" class="answer-select" data-key="gap7"></select>
+            goodbye.
+          </li>
+        </ol>
+      </section>
+
+      <footer class="footer">
+        <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+        <button type="button" id="submitBtn" class="primary-btn">Завершить тест и отправить результаты</button>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
